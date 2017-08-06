@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="SpringBoot CORS," />
 
 
 
@@ -94,16 +94,18 @@
 
 
 
-<meta name="description" content="litmonk的个人博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="litmonk">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
+<meta name="keywords" content="SpringBoot CORS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Springboot和CORS机制实现跨域控制">
+<meta property="og:url" content="http://yoursite.com/2017/08/06/基于Springboot和CORS机制实现跨域控制/index.html">
 <meta property="og:site_name" content="litmonk">
-<meta property="og:description" content="litmonk的个人博客">
+<meta property="og:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-06T15:16:10.204Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="litmonk">
-<meta name="twitter:description" content="litmonk的个人博客">
+<meta name="twitter:title" content="基于Springboot和CORS机制实现跨域控制">
+<meta name="twitter:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
 
 
 
@@ -132,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/06/基于Springboot和CORS机制实现跨域控制/"/>
 
 
 
 
 
-  <title>litmonk</title>
+  <title>基于Springboot和CORS机制实现跨域控制 | litmonk</title>
   
 
 
@@ -163,9 +165,7 @@
     
   
 
-  <div class="container sidebar-position-right 
-   page-home 
- ">
+  <div class="container sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -248,9 +248,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -280,9 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/06/基于Springboot和CORS机制实现跨域控制/" itemprop="url">基于Springboot和CORS机制实现跨域控制</a></h1>
+          <h1 class="post-title" itemprop="name headline">基于Springboot和CORS机制实现跨域控制</h1>
         
 
         <div class="post-meta">
@@ -332,9 +330,7 @@
       
 
       
-        
-          
-            <h1 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h1><p>CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。<br>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。</p>
+        <h1 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h1><p>CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。<br>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。</p>
 <p>#跨域访问控制#</p>
 <h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>浏览器上从域Domain1往域Domain2发起一个请求，域Domain2后台响应消息并返回修改Cookie响应，最终在浏览器上可以看到域Domain2的Cookie被修改，达到跨域传递信息的作用，适用于跨域鉴权等场景。</p>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="前端页面"><a href="#前端页面" class="headerlink" title="前端页面"></a>前端页面</h3><p>前端主要逻辑为发起跨域请求，为简单起见，本次主要为本机两个IP之间进行域切换，通过本机大网IP打开页面，然后跨域访问本机127.0.0.1:8080的API接口。主要代码如下：<br><code>function corsTest() {
@@ -374,8 +370,6 @@ public FilterRegistrationBean corsFilter() {
 }</code></p>
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/litmonk/spring-cors" target="_blank" rel="external">https://github.com/litmonk/spring-cors</a></p>
 
-          
-        
       
     </div>
     
@@ -390,14 +384,20 @@ public FilterRegistrationBean corsFilter() {
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot-CORS/" rel="tag"># SpringBoot CORS</a>
+          
+        </div>
+      
+
+      
+      
+      
 
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -407,10 +407,11 @@ public FilterRegistrationBean corsFilter() {
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -418,6 +419,10 @@ public FilterRegistrationBean corsFilter() {
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -438,8 +443,17 @@ public FilterRegistrationBean corsFilter() {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -492,6 +506,22 @@ public FilterRegistrationBean corsFilter() {
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CORS简介"><span class="nav-number">1.</span> <span class="nav-text">CORS简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方案"><span class="nav-number">1.1.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">1.2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端页面"><span class="nav-number">1.2.1.</span> <span class="nav-text">前端页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台代码"><span class="nav-number">1.2.2.</span> <span class="nav-text">后台代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#API接口"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">API接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨域配置管理"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">跨域配置管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">1.3.</span> <span class="nav-text">源码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -612,10 +642,10 @@ public FilterRegistrationBean corsFilter() {
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
