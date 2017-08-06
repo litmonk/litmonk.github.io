@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
+<meta name="description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域资源（比如html/js/web service）被其他域的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 跨域访问控制方案场景浏览器上从域Domain1往域Domain2">
 <meta name="keywords" content="SpringBoot CORS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于Springboot和CORS机制实现跨域控制">
 <meta property="og:url" content="http://yoursite.com/2017/08/06/基于Springboot和CORS机制实现跨域控制/index.html">
 <meta property="og:site_name" content="litmonk">
-<meta property="og:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
+<meta property="og:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域资源（比如html/js/web service）被其他域的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 跨域访问控制方案场景浏览器上从域Domain1往域Domain2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-06T15:16:10.204Z">
+<meta property="og:updated_time" content="2017-08-06T15:37:51.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于Springboot和CORS机制实现跨域控制">
-<meta name="twitter:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 #跨域访问控制# 方案浏览器上从">
+<meta name="twitter:description" content="CORS简介CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域资源（比如html/js/web service）被其他域的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。 跨域访问控制方案场景浏览器上从域Domain1往域Domain2">
 
 
 
@@ -330,44 +330,11 @@
       
 
       
-        <h1 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h1><p>CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域（domain）资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制。<br>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。</p>
-<p>#跨域访问控制#</p>
-<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>浏览器上从域Domain1往域Domain2发起一个请求，域Domain2后台响应消息并返回修改Cookie响应，最终在浏览器上可以看到域Domain2的Cookie被修改，达到跨域传递信息的作用，适用于跨域鉴权等场景。</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="前端页面"><a href="#前端页面" class="headerlink" title="前端页面"></a>前端页面</h3><p>前端主要逻辑为发起跨域请求，为简单起见，本次主要为本机两个IP之间进行域切换，通过本机大网IP打开页面，然后跨域访问本机127.0.0.1:8080的API接口。主要代码如下：<br><code>function corsTest() {
-    $.ajax({
-        url: &quot;http://127.0.0.1:8080/api/login&quot;,
-        crossDomain: true,
-        type: &quot;POST&quot;,
-        success: function (data, status, xhr) {
-            console.log(data);
-        },
-        xhrFields: {
-            withCredentials: true
-        }
-    });
-};</code></p>
-<h3 id="后台代码"><a href="#后台代码" class="headerlink" title="后台代码"></a>后台代码</h3><h4 id="API接口"><a href="#API接口" class="headerlink" title="API接口"></a>API接口</h4><p>前端需要访问该API接口进行修改Cookie信息，主要代码如下：<br><code>@RequestMapping(value = &quot;/api/login&quot;, method = RequestMethod.POST)
-public void login(HttpServletRequest req, HttpServletResponse resp){
-    Cookie cookie = new Cookie(&quot;Auth&quot;, &quot;test&quot;);
-    cookie.setPath(&quot;/&quot;);
-    cookie.setHttpOnly(true);
-    resp.addCookie(cookie);
-}</code></p>
-<h4 id="跨域配置管理"><a href="#跨域配置管理" class="headerlink" title="跨域配置管理"></a>跨域配置管理</h4><p>该部分代码主要为了对API接口的跨域进行控制，在默认配置下，不允许跨域访问，要允许跨域要把需要允许的域配置到下方代码的config.addAllowedOrigin中，也可以在运行时通过封装的接口进行修改：<br><code>@Bean
-public FilterRegistrationBean corsFilter() {
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    final CorsConfiguration config = new CorsConfiguration();
-    config.setAllowCredentials(true);
-    // 默认不允许跨域，如果有默认值，格式如下：http://domain.com:8080
-    config.addAllowedOrigin(&quot;&quot;);
-    config.addAllowedHeader(&quot;*&quot;);
-    config.addAllowedMethod(&quot;POST&quot;);
-    source.registerCorsConfiguration(&quot;/api/login&quot;, config);
-    corsMap.put(&quot;/api/login&quot;, config);
-    FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-    bean.setOrder(0);
-    return bean;
-}</code></p>
+        <h1 id="CORS简介"><a href="#CORS简介" class="headerlink" title="CORS简介"></a>CORS简介</h1><p>CORS全称”跨域资源共享”（Cross-Origin Resource Sharing），是一种允许当前域资源（比如html/js/web service）被其他域的脚本请求访问的机制。它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制，提供了一种浏览器跨域访问的方案。</p>
+<h1 id="跨域访问控制方案"><a href="#跨域访问控制方案" class="headerlink" title="跨域访问控制方案"></a>跨域访问控制方案</h1><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>浏览器上从域Domain1往域Domain2发起一个请求，域Domain2后台响应消息并返回修改Cookie响应，最终在浏览器上可以看到域Domain2的Cookie被修改，达到跨域传递信息的作用，适用于跨域鉴权等场景。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="前端页面"><a href="#前端页面" class="headerlink" title="前端页面"></a>前端页面</h3><p>前端主要逻辑为发起跨域请求，为简单起见，本次主要为本机两个IP之间进行域切换，通过本机大网IP打开页面，然后跨域访问本机127.0.0.1:8080的API接口。主要代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">corsTest</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    $.ajax(&#123;</div><div class="line">        url: <span class="string">"http://127.0.0.1:8080/api/login"</span>,</div><div class="line">        crossDomain: <span class="literal">true</span>,</div><div class="line">        type: <span class="string">"POST"</span>,</div><div class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">data, status, xhr</span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(data);</div><div class="line">        &#125;,</div><div class="line">        xhrFields: &#123;</div><div class="line">            withCredentials: <span class="literal">true</span></div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3 id="后台代码"><a href="#后台代码" class="headerlink" title="后台代码"></a>后台代码</h3><h4 id="API接口"><a href="#API接口" class="headerlink" title="API接口"></a>API接口</h4><p>前端需要访问该API接口进行修改Cookie信息，主要代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/api/login"</span>, method = RequestMethod.POST)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span>&#123;</div><div class="line">    Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">"Auth"</span>, <span class="string">"test"</span>);</div><div class="line">    cookie.setPath(<span class="string">"/"</span>);</div><div class="line">    cookie.setHttpOnly(<span class="keyword">true</span>);</div><div class="line">    resp.addCookie(cookie);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="跨域配置管理"><a href="#跨域配置管理" class="headerlink" title="跨域配置管理"></a>跨域配置管理</h4><p>该部分代码主要为了对API接口的跨域进行控制，在默认配置下，不允许跨域访问，想要允许跨域要把要允许的域配置到下方代码的config.addAllowedOrigin中，或者在运行时通过封装的接口进行修改：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Bean</span></div><div class="line"><span class="function"><span class="keyword">public</span> FilterRegistrationBean <span class="title">corsFilter</span><span class="params">()</span> </span>&#123;</div><div class="line">    UrlBasedCorsConfigurationSource source = <span class="keyword">new</span> UrlBasedCorsConfigurationSource();</div><div class="line">    <span class="keyword">final</span> CorsConfiguration config = <span class="keyword">new</span> CorsConfiguration();</div><div class="line">    config.setAllowCredentials(<span class="keyword">true</span>);</div><div class="line">    <span class="comment">// 默认不允许跨域，如果有默认值，格式如下：http://domain.com:8080</span></div><div class="line">    config.addAllowedOrigin(<span class="string">""</span>);</div><div class="line">    config.addAllowedHeader(<span class="string">"*"</span>);</div><div class="line">    config.addAllowedMethod(<span class="string">"POST"</span>);</div><div class="line">    source.registerCorsConfiguration(<span class="string">"/api/login"</span>, config);</div><div class="line">    corsMap.put(<span class="string">"/api/login"</span>, config);</div><div class="line">    FilterRegistrationBean bean = <span class="keyword">new</span> FilterRegistrationBean(<span class="keyword">new</span> CorsFilter(source));</div><div class="line">    bean.setOrder(<span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> bean;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/litmonk/spring-cors" target="_blank" rel="external">https://github.com/litmonk/spring-cors</a></p>
 
       
@@ -516,7 +483,7 @@ public FilterRegistrationBean corsFilter() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CORS简介"><span class="nav-number">1.</span> <span class="nav-text">CORS简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方案"><span class="nav-number">1.1.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">1.2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端页面"><span class="nav-number">1.2.1.</span> <span class="nav-text">前端页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台代码"><span class="nav-number">1.2.2.</span> <span class="nav-text">后台代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#API接口"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">API接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨域配置管理"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">跨域配置管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">1.3.</span> <span class="nav-text">源码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CORS简介"><span class="nav-number">1.</span> <span class="nav-text">CORS简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#跨域访问控制方案"><span class="nav-number">2.</span> <span class="nav-text">跨域访问控制方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">2.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">2.2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端页面"><span class="nav-number">2.2.1.</span> <span class="nav-text">前端页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台代码"><span class="nav-number">2.2.2.</span> <span class="nav-text">后台代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#API接口"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">API接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跨域配置管理"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">跨域配置管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">2.3.</span> <span class="nav-text">源码</span></a></li></ol></li></ol></div>
             
 
           </div>
